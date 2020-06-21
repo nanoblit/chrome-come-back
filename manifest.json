@@ -2,7 +2,13 @@
   "name": "Chrome Come Back",
   "version": "1.0",
   "description": "Come back!",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage",
+    "tabs",
+    "*://*/*"
+  ],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
