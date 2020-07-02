@@ -1,3 +1,5 @@
+/// <reference types="chrome"/>
+
 "use strict";
 
 const websiteAddressInputElement = document.getElementById("website-address");
@@ -41,28 +43,28 @@ for (let element of elements) {
 }
 
 activeCheckboxElement.onclick = (element) => {
-  const checkbox = element.target;
+  const checkbox = element.target as HTMLInputElement;
   setBackgroundColorsBasedOnCheckbox(checkbox);
 };
 
 // ====================================
 
-function setInputInStorageWhenChanged(element) {
+function setInputInStorageWhenChanged(element: HTMLElement) {
   element.addEventListener("input", (element) => {
-    const input = element.target;
+    const input = element.target as HTMLInputElement;
     chrome.storage.sync.set(getInputKeyValuePair(input), () => {
       logNewStorageKeyValuePair(input);
     });
   });
 }
 
-function getInputKeyValuePair(input) {
+function getInputKeyValuePair(input: HTMLInputElement) {
   return input.type === "checkbox"
     ? { [input.id]: input.checked }
     : { [input.id]: input.value };
 }
 
-function logNewStorageKeyValuePair(input) {
+function logNewStorageKeyValuePair(input: HTMLInputElement) {
   console.log(
     `${input.id} is set to ${
       input.type === "checkbox" ? input.checked : input.value
@@ -70,7 +72,7 @@ function logNewStorageKeyValuePair(input) {
   );
 }
 
-function setBackgroundColorsBasedOnCheckbox(checkbox) {
+function setBackgroundColorsBasedOnCheckbox(checkbox: HTMLInputElement) {
   if (checkbox.checked) {
     isActive = true;
     setBackgroundOfEveryPageToColor("green");
@@ -80,7 +82,7 @@ function setBackgroundColorsBasedOnCheckbox(checkbox) {
   }
 }
 
-function setBackgroundOfEveryPageToColor(color) {
+function setBackgroundOfEveryPageToColor(color: string) {
   chrome.tabs.query({}, (tabs) => {
     for (let tab of tabs) {
       if (stringIsntInUrl(".", tab.url)) {
@@ -91,12 +93,12 @@ function setBackgroundOfEveryPageToColor(color) {
   });
 }
 
-function setBackgroundOfPageToColor(tab, color) {
+function setBackgroundOfPageToColor(tab: chrome.tabs.Tab, color: string) {
   chrome.tabs.executeScript(tab.id, {
     code: `document.body.style.backgroundColor = "${color}";`,
   });
 }
 
-function stringIsntInUrl(str, url) {
+function stringIsntInUrl(str: string, url: string) {
   return url.indexOf(str) < 0;
 }

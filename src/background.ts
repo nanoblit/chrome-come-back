@@ -1,3 +1,5 @@
+/// <reference types="chrome"/>
+
 "use strict";
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -10,13 +12,16 @@ chrome.runtime.onInstalled.addListener(() => {
   InludePageActionOnPagesWithStringInAddress(".");
 });
 
-function setColorInStorage(color) {
+function setColorInStorage(color: string) {
   chrome.storage.sync.set({ color }, () => {
     console.log("The color is green.");
   });
 }
 
-function printNewPagesUrl(changeInfo, tab) {
+function printNewPagesUrl(
+  changeInfo: chrome.tabs.TabChangeInfo,
+  tab: chrome.tabs.TabChangeInfo
+) {
   chrome.storage.sync.get(["website-address"], (inputs) => {
     if (!inputs["website-address"] || changeInfo.status !== "complete") {
       return;
@@ -27,11 +32,11 @@ function printNewPagesUrl(changeInfo, tab) {
   });
 }
 
-function stringIsInUrl(str, url) {
+function stringIsInUrl(str: string, url: string) {
   return url.indexOf(str) > -1;
 }
 
-function InludePageActionOnPagesWithStringInAddress(str) {
+function InludePageActionOnPagesWithStringInAddress(str: string) {
   chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
     chrome.declarativeContent.onPageChanged.addRules([
       {
