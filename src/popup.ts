@@ -42,12 +42,23 @@ for (let element of elements) {
   setInputInStorageWhenChanged(element);
 }
 
-activeCheckboxElement.onclick = (element) => {
-  const checkbox = element.target as HTMLInputElement;
-  setBackgroundColorsBasedOnCheckbox(checkbox);
-};
+// activeCheckboxElement.onclick = (element) => {
+//   const checkbox = element.target as HTMLInputElement;
+//   setBackgroundColorsBasedOnCheckbox(checkbox);
+// };
 
 // ====================================
+
+// TODO: Finish setting up inputs from storage
+function setupInputsFromStorage(inputs: HTMLInputElement[]) {
+  chrome.storage.sync.get(
+    ["website-address", "logout-redirect-address","login-page-address","username-field-selector","password-field-selector","sign-in-button-selector","username","password","active"],
+    (storage) => {
+      for (let input of inputs) {
+
+      }
+    })
+}
 
 function setInputInStorageWhenChanged(element: HTMLElement) {
   element.addEventListener("input", (element) => {
@@ -72,33 +83,33 @@ function logNewStorageKeyValuePair(input: HTMLInputElement) {
   );
 }
 
-function setBackgroundColorsBasedOnCheckbox(checkbox: HTMLInputElement) {
-  if (checkbox.checked) {
-    isActive = true;
-    setBackgroundOfEveryPageToColor("green");
-  } else {
-    isActive = false;
-    setBackgroundOfEveryPageToColor("white");
-  }
-}
+// function setBackgroundColorsBasedOnCheckbox(checkbox: HTMLInputElement) {
+//   if (checkbox.checked) {
+//     isActive = true;
+//     setBackgroundOfEveryPageToColor("green");
+//   } else {
+//     isActive = false;
+//     setBackgroundOfEveryPageToColor("white");
+//   }
+// }
 
-function setBackgroundOfEveryPageToColor(color: string) {
-  chrome.tabs.query({}, (tabs) => {
-    for (let tab of tabs) {
-      if (stringIsntInUrl(".", tab.url)) {
-        continue;
-      }
-      setBackgroundOfPageToColor(tab, color)
-    }
-  });
-}
+// function setBackgroundOfEveryPageToColor(color: string) {
+//   chrome.tabs.query({}, (tabs) => {
+//     for (let tab of tabs) {
+//       if (stringIsntInUrl(".", tab.url)) {
+//         continue;
+//       }
+//       setBackgroundOfPageToColor(tab, color)
+//     }
+//   });
+// }
 
-function setBackgroundOfPageToColor(tab: chrome.tabs.Tab, color: string) {
-  chrome.tabs.executeScript(tab.id, {
-    code: `document.body.style.backgroundColor = "${color}";`,
-  });
-}
+// function setBackgroundOfPageToColor(tab: chrome.tabs.Tab, color: string) {
+//   chrome.tabs.executeScript(tab.id, {
+//     code: `document.body.style.backgroundColor = "${color}";`,
+//   });
+// }
 
-function stringIsntInUrl(str: string, url: string) {
-  return url.indexOf(str) < 0;
-}
+// function stringIsntInUrl(str: string, url: string) {
+//   return url.indexOf(str) < 0;
+// }
